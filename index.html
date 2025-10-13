@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Little Surprise Just for You 💕</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(to bottom, #e0f7fa, #dd00ff);
+            color: #4a4a4a;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #7b1fa2;
+            margin-bottom: 10px;
+            animation: gentlePulse 3s infinite;
+        }
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .heart {
+            color: #e91e63;
+            font-size: 1.5em;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .tip-box {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #ffcdd2;
+        }
+        .tip-box h3 {
+            color: #d81b60;
+            margin-top: 0;
+        }
+        ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+        li {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        .closing {
+            font-style: italic;
+            color: #7b1fa2;
+            font-size: 1.3em;
+            margin-top: 40px;
+        }
+        .flower {
+            font-size: 3em;
+            margin: 20px 0;
+            animation: sway 4s ease-in-out infinite;
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        /* Bouquet Section */
+        .bouquet {
+            margin-top: 40px;
+            padding: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .bouquet h3 {
+            color: #d81b60;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .flowers {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            animation: bouquetSway 6s ease-in-out infinite;
+        }
+        .flower-emoji {
+            font-size: 2.5em;
+            animation: individualSway 3s ease-in-out infinite;
+        }
+        @keyframes bouquetSway {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes individualSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .stem {
+            font-size: 1em;
+            color: #4caf50;
+            margin-top: -10px;
+            display: block;
+        }
+        .picture-1{
+            height: 5.5em;
+            width: auto;
+        }
+        .picture-2{
+            height: 4.5em;
+            width: auto;
+        }
+        .picture-3{
+            height: 10em;
+            background-color: purple;
+            border-radius: 25px;
+            width: auto;
+        }
+        .picture-3:hover{
+            border-radius:25px;
+            background-color: rgb(242, 12, 242);
+            box-shadow: 2px 2px 25px rgb(191, 80, 191);
+        }
+
+
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1.1em;
+                padding: 0 10px;
+            }
+            .tip-box {
+                padding: 15px;
+                margin: 15px auto;
+                max-width: 90%;
+            }
+            li {
+                font-size: 1em;
+            }
+            .closing {
+                font-size: 1.1em;
+            }
+            .flower {
+                font-size: 2.5em;
+            }
+            .bouquet {
+                padding: 15px;
+            }
+            .flowers {
+                gap: 5px;
+            }
+            .flower-emoji {
+                font-size: 2em;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .tip-box {
+                padding: 10px;
+            }
+            .flowers {
+                flex-direction: column;
+                align-items: center;
+            }
+            .flower-emoji {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Mwa Mwa🌸</h1>
+    <div class="heart">💖</div>
+    
+    <p>Hello My baby, it is that time of the month again and your period is starting, I'm making this for you as reminder, and also my way of supporting you:) Take a deep breath you've got this, and I'm right here with you. Don't Worry this will pass baby</p>
+    <img class="picture-1"src="its-ok.gif">
+    <div class="flower">🌺</div>
+    
+    <div class="tip-box">
+        <h3> I love you Alexa💕</h3>
+        <ul>
+            <li>Don't be hard on yourself baby and take your time to rest.</li>
+            <li>Lessen your workload no rushing and do your dues later if its not need today love.</li>
+            <li>I remebered you said chocolates also help you, and I'll treat you when we meet I love you </li>
+            <li>Don't worry po tetel is always with you even if nag study ko po rn huhu </li>
+        </ul>
+        <img class="picture-2"src="kitty.gif">
+    </div>
+    
+    <p>As of now baby you're not alone in this, and I can't wait to see you and make you smile like this :D. Feel better, my Love Alexa.</p>
+    
+    <div class="closing">your boyfriend, <br> Tetel <3</div>
+    <img class="picture-3"src="luvyu.gif">
+    <!-- Flower Bouquet -->
+    <div class="bouquet">
+        <h3>A Virtual flowers for you :) 🌹</h3>
+        <div class="flowers">
+            <div class="flower-emoji">🌹<span class="stem">|</span></div>
+            <div class="flower-emoji">🌺<span class="stem">||</span></div>
+            <div class="flower-emoji">🌸<span class="stem">|</span></div>
+            <div class="flower-emoji">🌻<span class="stem">||</span></div>
+            <div class="flower-emoji">🌷<span class="stem">|</span></div>
+        </div>
+    </div>
+</body>
+</html>
