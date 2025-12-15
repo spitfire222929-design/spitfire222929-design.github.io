@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/4e7b0f6354.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/CSS" href="shopping-cart.css" />
+    <link rel="icon" type="image/png" href="..//images/Rednova-logo-main.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet"/>
+    <title>RedNova | Shopping Cart</title>
+  </head>
+  <body>
+
+    <!-- HEADER SECTION -->
+
+    <header class="header">
+      <div class="nav-container">
+        <div class="navbar">
+          <a href="#top-carousel"><img src="..//images/Rednova-logo.png" alt="Rednova logo"/></a>
+          <ul class="nav-menu">
+            <li><a href="..//1Landing-page/index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#">About</a>
+              <ul class="dropdown-menu">
+                <li><a href="..//3About-page-folder/About-page-OurHistory.html">Our history</a></li>
+                <li><a href="..//3About-page-folder/About-page-Partner-brands.html">Partner Brands</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#">Products</a>
+                <ul class="dropdown-menu">
+                  <li class="sub-dropdown">
+                    <a href="#">Laptops</a>
+                    <ul class="sub-menu">
+                      <li><a href="..//2Product-page-folder/product-page-laptop-productivity.html"> Productivity</a></li>
+                      <li><a href="..//2Product-page-folder/Product-page-laptop-gaming.html">Gaming</a></li>
+                    </ul>
+                  </li>
+                  <li class="sub-dropdown">
+                    <a href="#">Peripherals</a>
+                    <ul class="sub-menu">
+                      <li><a href="..//2Product-page-folder/Product-page-peripheral-monitor.html">Monitor</a></li>
+                      <li><a href="..//2Product-page-folder/Product-page-peripheral-headset.html">Headset</a></li>
+                      <li><a href="..//2Product-page-folder/Product-page-peripheral-keyboard.html">Keyboard</a></li>
+                      <li><a href="..//2Product-page-folder/Product-page-peripheral-mouse.html">Mouse</a></li>
+                    </ul>
+                  </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+              <a href="..//4contacts-page/contacts.html">Contacts</a>
+            </li>
+          </ul>
+          <form class="search-form">
+            <div class="search-wrapper">
+              <button type="submit" class="search-btn">
+                <i class="fa fa-search"></i>
+              </button>
+              <input type="search" id="searchInput" placeholder="Search...">
+            </div>
+          </form>
+          <div class="header-icons">
+            <a href="..//6Log-in-page-folder/Log-in-page.html"><i class="fa fa-user" id="user-icon"></i></a>
+            <a href="shopping-cart.html"><i class="fa fa-shopping-cart" id="shopping-cart"></i></a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section-1">
+        <div class="title-box">
+          <div class="title"> YOUR CART </div>
+          <p>Lorem ipsum dolor, sit a Lorem ipsum dolor, sit a Lorem ipsum dolor, sit a Lorem ipsum dolor, sit a</p>
+        </div>
+       <div class="Cart-wrapper">
+        <div class="Cart">
+          <div class="cart-header">
+            <p>Cart Items (0)</p>
+            <a href="#">Continue shopping</a>
+          </div>
+          <div class="cart-content">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <h4>Your cart is empty</h4>
+            <p>Looks like you haven't added any items in your cart yet.</p>
+            <button> Start Shopping </button>
+          </div>
+        </div>
+        <div class="order-summary">
+          <h3>Order Summary (0 items)</h3>
+          <div class="row" id="sub-total">
+            <span>Subtotal</span>
+            <span class="price">₱0</span>
+          </div>
+          <div class="row">
+            <span>Shipping</span>
+            <span class="price">-</span>
+          </div>
+          <div class="total-row">
+            <span>Total</span>
+            <span class="price">₱0</span>
+          </div>
+          <button class="checkout-btn">
+            Proceed to Checkout 
+            <span class="arrow">→</span>
+          </button>
+        </div>
+       </div>
+      </section>
+    </main> 
+
+      <!--FOOTER SECTION-->
+
+     <footer class="footer">
+        <div class="footer-container">
+          <img src="../images/Rednova-logo.png" />
+          <div class="icons-footer">
+            <a href="https://www.facebook.com/spitfire.ricafrente.1"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.instagram.com/telelet_wawayo2/"><i class="fa fa-instagram"></i></a>
+            <a href="https://github.com/spitfire222929-design/spitfire222929-design.github.io"><i class="fa fa-github"></i></a>
+            <a href="https://www.youtube.com/"><i class="fa fa-youtube"></i></a>
+            <a href="https://x.com/"><i class="fa-brands fa-square-x-twitter"></i></a>
+            <a href="https://play.google.com/store/games?device=windows&pli=1"><i class="fa-brands fa-google-play"></i></a>
+          </div>
+          <div>
+            Email: Rednova@gmail.com
+            <br />
+            &copy; Copyright All Rights Reserved
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>
