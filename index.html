@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine? 💌</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --purple: #7b2cbf;
+      --pink: #ff4081;
+      --light-purple: #e0c3fc;
+      --white: #ffffff;
+      --gold: #ffd700;
+      --chrysanthemum-purple: #9c27b0;
+      --chrysanthemum-light-purple: #ba68c8;
+      --chrysanthemum-dark-purple: #7b1fa2;
+      --chrysanthemum-yellow: #ffd700;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, var(--light-purple) 0%, #f8f4ff 50%, var(--white) 100%);
+      position: relative;
+    }
+
+    /* ENHANCED HEART RAIN */
+    .heart-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      top: -50px;
+      color: rgba(255, 0, 100, 0.6);
+      animation: fall linear infinite;
+      z-index: 0;
+      filter: drop-shadow(0 0 3px rgba(255, 20, 147, 0.5));
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* PAGE BASE */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 2rem;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    .page.active {
+      display: flex;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    /* PAGE INDICATOR DOTS */
+    .page-indicators {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.6);
+      border: 2px solid var(--purple);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: var(--pink);
+      transform: scale(1.3);
+      border-color: var(--pink);
+    }
+
+    /* ENVELOPE - ENHANCED & BIGGER LETTER */
+    .envelope-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .tap-hint {
+      color: var(--purple);
+      font-size: 1.3rem;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 25px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+      animation: pulse 2s infinite;
+      box-shadow: 0 5px 15px rgba(123, 44, 191, 0.2);
+      border: 2px solid rgba(123, 44, 191, 0.2);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .envelope {
+      width: 360px;
+      height: 250px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+    }
+
+    .envelope:hover {
+      transform: translateY(-5px);
+    }
+
+    .envelope .back {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, var(--purple), #5a189a);
+      border-radius: 0 0 25px 25px;
+      position: absolute;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .envelope .flap {
+      width: 0;
+      height: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-bottom: 125px solid #4a148c;
+      position: absolute;
+      top: 0;
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+    }
+
+    /* BIGGER LETTER */
+    .letter {
+      background: linear-gradient(to bottom, #fff9fb, #fff);
+      padding: 2.5rem;
+      border-radius: 25px;
+      width: 95%;
+      max-width: 600px;
+      position: absolute;
+      top: 30px;
+      opacity: 0;
+      transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .letter::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, var(--purple), var(--pink), var(--purple));
+    }
+
+    .envelope.open .letter {
+      top: -280px;
+      opacity: 1;
+      z-index: 10;
+    }
+
+    .letter h1 {
+      color: var(--purple);
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .letter p {
+      color: #666;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+
+    .letter-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1.8rem;
+      border: 4px solid var(--light-purple);
+      transition: transform 0.5s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .letter-img:hover {
+      transform: scale(1.03);
+    }
+
+    /* BUTTONS - ENHANCED WITH SMART NO BUTTON */
+    .btn-group {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+      position: relative;
+      min-height: 70px;
+    }
+
+    button {
+      padding: 1.1rem 3rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1.3rem;
+      font-weight: 600;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      min-width: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    button:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(40, 40);
+        opacity: 0;
+      }
+    }
+
+    .yes {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: white;
+      position: relative;
+    }
+
+    .yes:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(123, 44, 191, 0.4);
+    }
+
+    .no { 
+      background: linear-gradient(135deg, #aaa, #888);
+      color: white;
+      position: absolute;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .no:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .no.escaping {
+      animation: escapeShake 0.5s ease;
+    }
+
+    @keyframes escapeShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* ENHANCED NO BUTTON AREA CONSTRAINTS */
+    .no-area {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* THANK YOU PAGE */
+    .thank-you-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 3rem;
+      border-radius: 30px;
+      max-width: 700px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .thank-you-card h1 {
+      color: var(--purple);
+      font-size: 3.2rem;
+      margin-bottom: 1.8rem;
+      background: linear-gradient(to right, var(--purple), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .thinkingcat{
+      height: 250px;
+    }
+    .thank-you-card p {
+      font-size: 1.4rem;
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 1.8rem;
+    }
+
+    /* ITINERARY - ENHANCED */
+    .itinerary-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      overflow: hidden;
+      padding: 1.5rem;
+    }
+
+    .itinerary-title {
+      color: var(--purple);
+      font-size: 3rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .itinerary-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 5px;
+      background: linear-gradient(to right, var(--purple), var(--pink));
+      border-radius: 3px;
+    }
+
+    .itinerary {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(300px, 1fr);
+      gap: 2.5rem;
+      padding: 2.5rem 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: var(--purple) rgba(255, 255, 255, 0.3);
+    }
+
+    .itinerary::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .itinerary-img{
+      height: 150px;
+      width: 150px;
+    }
+
+    .itinerary::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+
+    .itinerary::-webkit-scrollbar-thumb {
+      background: linear-gradient(to right, var(--purple), var(--pink));
+      border-radius: 10px;
+    }
+
+    
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 25px;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
+      scroll-snap-align: start;
+      position: relative;
+      overflow: hidden;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, var(--purple), var(--pink));
+    }
+
+    .card:hover { 
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.07);
+    }
+
+    .card h3 {
+      color: var(--purple);
+      font-size: 1.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.6;
+      flex-grow: 1;
+      font-size: 1.1rem;
+    }
+
+    /* PURPLE CHRYSANTHEMUM FLOWER - ENHANCED */
+    .flower-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      max-width: 700px;
+    }
+
+    .flower-title {
+      color: var(--purple);
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .flower-subtitle {
+      color: #666;
+      font-size: 1.4rem;
+      max-width: 600px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .flower-stage {
+      width: 320px;
+      height: 400px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chrysanthemum {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      transform-origin: center;
+      animation: gentleSway 10s ease-in-out infinite;
+    }
+
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(3deg) scale(1.02); }
+      75% { transform: rotate(-3deg) scale(1.02); }
+    }
+
+    /* Chrysanthemum center */
+    .chrys-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, var(--chrysanthemum-yellow), #ffaa00);
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
+
+    /* Chrysanthemum petals (multiple layers) */
+    .chrys-petal-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+    }
+
+    .chrys-petal {
+      position: absolute;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin: center;
+      opacity: 0;
+      animation: bloomPetal 2s forwards;
+    }
+
+    @keyframes bloomPetal {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .stem {
+      width: 14px;
+      height: 220px;
+      background: linear-gradient(to bottom, #2e7d32, #4caf50);
+      position: absolute;
+      top: 200px;
+      border-radius: 7px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .leaf {
+      position: absolute;
+      width: 60px;
+      height: 35px;
+      background: linear-gradient(to bottom, #2e7d32, #4caf50);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .leaf-left {
+      top: 240px;
+      left: 40px;
+      transform: rotate(-45deg);
+    }
+
+    .leaf-right {
+      top: 270px;
+      right: 40px;
+      transform: rotate(45deg);
+    }
+
+    .flower-message {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      padding: 2.5rem;
+      border-radius: 25px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .flower-message p {
+      font-size: 1.3rem;
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    /* NAVIGATION BUTTONS */
+    .nav-buttons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* BLOOMING ANIMATION CONTROL */
+    .bloom-control {
+      margin-top: 1rem;
+    }
+
+    .bloom-btn {
+      background: linear-gradient(135deg, #ff6b9d, #ff4081);
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 900px) {
+      .envelope {
+        width: 320px;
+        height: 220px;
+      }
+      
+      .envelope .flap {
+        border-left: 160px solid transparent;
+        border-right: 160px solid transparent;
+        border-bottom: 110px solid #4a148c;
+      }
+      
+      .envelope.open .letter {
+        top: -240px;
+      }
+      
+      .letter {
+        padding: 2rem;
+        max-width: 550px;
+      }
+      
+      .letter h1 {
+        font-size: 2.5rem;
+      }
+      
+      .letter p {
+        font-size: 1.2rem;
+      }
+      
+      .letter-img {
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 1.5rem;
+      }
+      
+      .envelope {
+        width: 300px;
+        height: 200px;
+      }
+      
+      .envelope .flap {
+        border-left: 150px solid transparent;
+        border-right: 150px solid transparent;
+        border-bottom: 100px solid #4a148c;
+      }
+      
+      .letter {
+        padding: 1.8rem;
+        max-width: 500px;
+      }
+      
+      .envelope.open .letter {
+        top: -220px;
+      }
+      
+      .itinerary {
+        grid-auto-flow: row;
+        grid-auto-columns: 1fr;
+        overflow-x: visible;
+      }
+      
+      .thank-you-card {
+        padding: 2rem;
+      }
+      
+      .thank-you-card h1 {
+        font-size: 2.5rem;
+      }
+      
+      .page-indicators {
+        display: none;
+      }
+      
+      button {
+        padding: 1rem 2.2rem;
+        min-width: 140px;
+        font-size: 1.2rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      
+      .no {
+        position: static !important;
+        margin-top: 10px;
+      }
+      
+      .flower-stage {
+        transform: scale(0.9);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .envelope {
+        width: 280px;
+        height: 180px;
+      }
+      
+      .envelope .flap {
+        border-left: 140px solid transparent;
+        border-right: 140px solid transparent;
+        border-bottom: 90px solid #4a148c;
+      }
+      
+      .letter h1 {
+        font-size: 2rem;
+      }
+      
+      .letter p {
+        font-size: 1.1rem;
+      }
+      
+      button {
+        width: 100%;
+        max-width: 250px;
+      }
+      
+      .flower-stage {
+        transform: scale(0.7);
+      }
+      
+      .tap-hint {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Heart Rain -->
+  <div class="heart-rain" id="heartRain"></div>
+  
+  <!-- Page Indicators -->
+  <div class="page-indicators">
+    <div class="dot active" data-page="1"></div>
+    <div class="dot" data-page="2"></div>
+    <div class="dot" data-page="3"></div>
+    <div class="dot" data-page="4"></div>
+    <div class="dot" data-page="5"></div>
+  </div>
+
+  <!-- PAGE 1 ENVELOPE -->
+  <section class="page active" id="page1">
+    <div class="envelope-container">
+      <div class="tap-hint">
+        <i class="fas fa-hand-point-up"></i> Tap the envelope to open
+      </div>
+      
+      <div class="envelope" id="envelope">
+        <div class="flap"></div>
+        <div class="back"></div>
+        <div class="letter">
+          <img src="cat-kitty.gif"/>
+          <h1 id="question">Will you be my Valentine? 💌</h1>          
+          <div class="btn-group" id="buttonGroup">
+            <div class="no-area" id="noArea"></div>
+            <button class="yes" id="yesBtn">
+              <i class="fas fa-heart"></i> Yes, Absolutely!
+            </button>
+            <button class="no" id="noBtn">
+              <i class="fas fa-times"></i> No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 THANK YOU -->
+  <section class="page" id="page2">
+    <div class="thank-you-card">
+      <img src="thankyoucat2.gif" alt="Happy couple" class="letter-img" />
+      <h1>Thank You so much! WOHOOOOO</h1>
+      <p>Can I invite you to a date this february 14?</p>
+      <div class="nav-buttons">
+        <button class="yes" onclick="goToPage(1)">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="yes" onclick="goToPage(3)">
+          Yes <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3 MESSAGE -->
+  <section class="page" id="page3">
+    <div class="thank-you-card">
+      <img src="thinking-cat.gif" class="thinkingcat"/>
+      <h1>Just For You</h1>
+      <p>I have planned all the details and our itenary for our Date! I hope you like it! please message me if you have clarifications</p>
+      <p>I love you so much</p>
+      <div class="nav-buttons">
+        <button class="yes" onclick="goToPage(2)">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="yes" onclick="goToPage(4)">
+          See Our Plan <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4 ITINERARY -->
+  <section class="page" id="page4">
+    <h1 class="itinerary-title">Our Valentine's Day Plan </h1>
+    <div class="itinerary-wrapper">
+      <div class="itinerary">
+        <div class="card">
+          <img src="wait.gif" class="itinerary-img">
+          <h3>4:00 PM - Class Dismission</h3>
+          <p>I'll be waitng for you outside of swu until your dismissal time hehe</p>
+        </div>
+        <div class="card">
+          <img src="dudu-bubu-eating-food.gif" class="itinerary-img" >
+          <h3>6:00 PM - Dinner at sm seaside</h3>
+          <p>Considering the travel time I think this would be the best calculation in reaching sm seaside</p>
+        </div>
+        <div class="card">
+          <img src="dudupicture.gif" class="itinerary-img" >
+          <h3>6:30 PM - Vivace Ocean park</h3>
+          <p> Art Gallery one of the major places that I have invited you to</p>
+        </div>
+        <div class="card">
+          <img src="space-galaxy.gif" class="itinerary-img" >
+          <h3>9:00 PM - Sm Seaside deck</h3>
+          <p>sky view in sm seaside with fries and icecreamm</p>
+        </div>
+        <div class="card">
+          <img src="walkinghome.gif" class="itinerary-img">
+          <h3>10:00 PM - Going home </h3>
+          <p>I'll be responsible for you on going home and even will be going with you</p>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="yes" onclick="goToPage(3)">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <button class="yes" onclick="goToPage(5)">
+        Final Surprise <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- PAGE 5 PURPLE CHRYSANTHEMUM FLOWER -->
+  <section class="page" id="page5">
+    <div class="flower-container">
+      <h1 class="flower-title">A Purple Chrysanthemum For My Valentine 💜</h1>
+      <p class="flower-subtitle">Purple chrysanthemums symbolize royalty, love, and admiration..</p>
+      
+      <div class="flower-stage">
+        <div class="chrysanthemum" id="chrysanthemum">
+          <!-- Petal layers will be generated by JavaScript -->
+          <div class="stem"></div>
+          <div class="chrys-center"></div>
+          <div class="leaf leaf-left"></div>
+          <div class="leaf leaf-right"></div>
+        </div>
+      </div>
+      
+      <div class="bloom-control">
+        <button class="yes bloom-btn" id="bloomBtn">
+          <i class="fas fa-seedling"></i> Make It Bloom
+        </button>
+      </div>
+      
+      <div class="flower-message">
+        <p>In the language of flowers, <strong>purple chrysanthemums</strong> represent noble love, deep affection, and royalty - exactly how I see you and our relationship.</p>
+        <p>Thank you for being my Valentine, my pretty princess, my baby, I love you always</p>
+        <div class="nav-buttons">
+          <button class="yes" onclick="goToPage(4)">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+          <button class="yes" onclick="goToPage(1)">
+            Start Over <i class="fas fa-redo"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      createHeartRain();
+      setupPageIndicators();
+      setupSmartNoButton();
+      setupEnvelope();
+      createChrysanthemum();
+      setupBloomButton();
+    });
+
+    // Enhanced heart rain
+    function createHeartRain() {
+      const heartRain = document.getElementById('heartRain');
+      const heartCount = 70;
+      
+      for (let i = 0; i < heartCount; i++) {
+        createHeart(heartRain);
+      }
+      
+      setInterval(() => {
+        if (document.querySelectorAll('.heart').length < 90) {
+          createHeart(heartRain);
+        }
+      }, 400);
+    }
+    
+    function createHeart(container) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = Math.random() > 0.5 ? '❤' : '💖';
+      
+      const left = Math.random() * 100;
+      const size = 15 + Math.random() * 30;
+      const duration = 4 + Math.random() * 8;
+      const delay = Math.random() * 6;
+      const opacity = 0.4 + Math.random() * 0.5;
+      
+      heart.style.left = `${left}vw`;
+      heart.style.fontSize = `${size}px`;
+      heart.style.animationDuration = `${duration}s`;
+      heart.style.animationDelay = `${delay}s`;
+      heart.style.opacity = opacity;
+      
+      container.appendChild(heart);
+      
+      setTimeout(() => {
+        if (heart.parentNode) {
+          heart.remove();
+        }
+      }, (duration + delay) * 1000);
+    }
+
+    // Page navigation
+    function goToPage(pageNum) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      document.getElementById(`page${pageNum}`).classList.add('active');
+      
+      document.querySelectorAll('.dot').forEach(dot => {
+        dot.classList.remove('active');
+        if (parseInt(dot.dataset.page) === pageNum) {
+          dot.classList.add('active');
+        }
+      });
+      
+      // Reset envelope if going back to page 1
+      if (pageNum === 1) {
+        const envelope = document.getElementById('envelope');
+        envelope.classList.remove('open');
+        resetNoButtonLogic();
+      }
+    }
+
+    // Page indicators
+    function setupPageIndicators() {
+      document.querySelectorAll('.dot').forEach(dot => {
+        dot.addEventListener('click', function() {
+          const pageNum = parseInt(this.dataset.page);
+          goToPage(pageNum);
+        });
+      });
+    }
+
+    // Envelope interaction
+    function setupEnvelope() {
+      const envelope = document.getElementById('envelope');
+      envelope.addEventListener('click', function() {
+        this.classList.add('open');
+      });
+    }
+
+    // SMART NO BUTTON - Enhanced to move randomly within middle area
+    let noCount = 0;
+    const noTexts = [
+      "Are you sure po?",
+      "Baka naman please :((", 
+      "Mohilak ko ron :(",
+      "Dili jud ka:(",
+      "Last chance nani do will you press no?",
+      "Karon, di naka ka pindot mwehehe"
+    ];
+    
+    function setupSmartNoButton() {
+      const noBtn = document.getElementById('noBtn');
+      const yesBtn = document.getElementById('yesBtn');
+      const question = document.getElementById('question');
+      const buttonGroup = document.getElementById('buttonGroup');
+      
+      // Define the safe middle area (avoid edges)
+      const getRandomMiddlePosition = () => {
+        const groupRect = buttonGroup.getBoundingClientRect();
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
+        
+        // Calculate boundaries (middle 60% of the container)
+        const minX = groupRect.width * 0.1;
+        const maxX = groupRect.width * 0.9 - btnWidth;
+        const minY = groupRect.height * 0.1;
+        const maxY = groupRect.height * 0.9 - btnHeight;
+        
+        // Return random position within middle area
+        return {
+          x: Math.max(minX, Math.random() * maxX),
+          y: Math.max(minY, Math.random() * maxY)
+        };
+      };
+      
+      noBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Add escape animation
+        this.classList.add('escaping');
+        setTimeout(() => this.classList.remove('escaping'), 500);
+        
+        if (noCount < noTexts.length) {
+          question.textContent = noTexts[noCount];
+          noCount++;
+        }
+        
+        // Move button to random middle position
+        const newPos = getRandomMiddlePosition();
+        this.style.position = 'absolute';
+        this.style.left = `${newPos.x}px`;
+        this.style.top = `${newPos.y}px`;
+        this.style.zIndex = '1000';
+        
+        // After 3 clicks, start making YES button bigger
+        if (noCount >= 3) {
+          const scale = 1 + (noCount - 2) * 0.25;
+          yesBtn.style.transform = `scale(${scale})`;
+          yesBtn.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          
+          // Make yes button pulse
+          yesBtn.style.animation = 'pulse 0.8s infinite';
+        }
+        
+        // Last no click - disable the button
+        if (noCount === 6) {
+          setTimeout(() => {
+            this.disabled = true;
+            this.style.opacity = '0.5';
+            this.innerHTML = '<i class="fas fa-ban"></i> No more!';
+            this.style.cursor = 'not-allowed';
+            
+            // Make yes button extra attractive
+            yesBtn.style.animation = 'pulse 0.6s infinite';
+            yesBtn.innerHTML = '<i class="fas fa-heart"></i> YES PLEASE! <i class="fas fa-heart"></i>';
+            yesBtn.style.fontSize = '1.4rem';
+            yesBtn.style.padding = '1.3rem 3.5rem';
+          }, 300);
+        }
+      });
+      
+      // Yes button click
+      yesBtn.addEventListener('click', function() {
+        goToPage(2);
+      });
+    }
+    
+    function resetNoButtonLogic() {
+      noCount = 0;
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const question = document.getElementById('question');
+      
+      question.textContent = "Will you be my Valentine? 💌";
+      yesBtn.style.transform = 'scale(1)';
+      yesBtn.style.animation = 'none';
+      yesBtn.innerHTML = '<i class="fas fa-heart"></i> Yes, Absolutely!';
+      yesBtn.style.fontSize = '';
+      yesBtn.style.padding = '';
+      
+      noBtn.style.position = 'static';
+      noBtn.disabled = false;
+      noBtn.style.opacity = '1';
+      noBtn.style.cursor = 'pointer';
+      noBtn.innerHTML = '<i class="fas fa-times"></i> No';
+      noBtn.style.left = '';
+      noBtn.style.top = '';
+    }
+
+    // Create beautiful PURPLE chrysanthemum flower
+    function createChrysanthemum() {
+      const chrysanthemum = document.getElementById('chrysanthemum');
+      // Purple color palette for the chrysanthemum
+      const colors = [
+        'var(--chrysanthemum-purple)',      // #9c27b0 - Deep purple
+        '#ba68c8',                           // Light purple
+        '#7b1fa2',                           // Dark purple
+        '#ab47bc',                           // Medium purple
+        '#ce93d8',                           // Very light purple
+        '#9c27b0',                           // Deep purple (repeat for more variety)
+        '#8e24aa',                           // Royal purple
+        '#d500f9'                            // Bright purple
+      ];
+      
+      // Create multiple layers of petals for realistic chrysanthemum
+      const layers = [
+        { count: 8, radius: 40, size: 40, delay: 0 },
+        { count: 12, radius: 60, size: 35, delay: 0.2 },
+        { count: 16, radius: 80, size: 30, delay: 0.4 },
+        { count: 20, radius: 100, size: 25, delay: 0.6 },
+        { count: 24, radius: 120, size: 22, delay: 0.8 }
+      ];
+      
+      layers.forEach((layer, layerIndex) => {
+        const petalLayer = document.createElement('div');
+        petalLayer.className = 'chrys-petal-layer';
+        petalLayer.id = `layer-${layerIndex}`;
+        
+        for (let i = 0; i < layer.count; i++) {
+          const petal = document.createElement('div');
+          petal.className = 'chrys-petal';
+          
+          // Calculate position
+          const angle = (i * 360) / layer.count;
+          const radian = (angle * Math.PI) / 180;
+          const x = Math.cos(radian) * layer.radius;
+          const y = Math.sin(radian) * layer.radius;
+          
+          // Style the petal
+          petal.style.width = `${layer.size}px`;
+          petal.style.height = `${layer.size * 1.5}px`;
+          petal.style.left = `calc(50% + ${x}px)`;
+          petal.style.top = `calc(50% + ${y}px)`;
+          petal.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+          
+          // Purple gradient for petals
+          const color1 = colors[layerIndex % colors.length];
+          const color2 = colors[(layerIndex + 1) % colors.length];
+          petal.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+          
+          petal.style.animationDelay = `${layer.delay}s`;
+          petal.style.boxShadow = `0 3px 10px rgba(0, 0, 0, 0.2)`;
+          petal.style.opacity = '0';
+          
+          petalLayer.appendChild(petal);
+        }
+        
+        chrysanthemum.appendChild(petalLayer);
+      });
+    }
+    
+    // Setup bloom button
+    function setupBloomButton() {
+      const bloomBtn = document.getElementById('bloomBtn');
+      const petals = document.querySelectorAll('.chrys-petal');
+      let isBloomed = false;
+      
+      bloomBtn.addEventListener('click', function() {
+        if (!isBloomed) {
+          // Bloom the flower
+          petals.forEach(petal => {
+            petal.style.animation = 'bloomPetal 1.5s forwards';
+            petal.style.opacity = '1';
+          });
+          
+          this.innerHTML = '<i class="fas fa-heart"></i> Bloom Again';
+          isBloomed = true;
+        } else {
+          // Reset and bloom again
+          petals.forEach(petal => {
+            petal.style.animation = 'none';
+            petal.style.opacity = '0';
+            setTimeout(() => {
+              petal.style.animation = 'bloomPetal 1.5s forwards';
+            }, 10);
+          });
+        }
+      });
+    }
+
+    // Make page responsive on resize
+    window.addEventListener('resize', function() {
+      // Reset no button position if it's absolute
+      const noBtn = document.getElementById('noBtn');
+      if (noBtn.style.position === 'absolute' && noCount < 6) {
+        noBtn.style.position = 'static';
+      }
+    });
+  </script>
+</body>
+</html>
